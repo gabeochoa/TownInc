@@ -1,10 +1,15 @@
 package com.gabeochoa;
 
 import java.awt.Graphics;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-import com.gabeochoa.engine.*;
+import com.gabeochoa.engine.Application;
+import com.gabeochoa.engine.Game;
+import com.gabeochoa.entities.Building;
+import com.gabeochoa.entities.Entity;
+import com.gabeochoa.entities.Human;
 
 public class Evo extends Game {
 
@@ -12,6 +17,9 @@ public class Evo extends Game {
 	
 	public int[] mouse = new int[5];
 	public boolean[] keys = new boolean[424242];
+	
+	public ArrayList<Building> buildings;
+	public ArrayList<Entity> entities;
 	
 	private boolean use,right,up, down,left;
 	private Graphics g;
@@ -31,6 +39,8 @@ public class Evo extends Game {
 	{
 		super();
 		title = "TownInc";
+		buildings = new ArrayList<Building>();
+		entities = new ArrayList<Entity>();
 	}
 	
 	public void startGame() {
@@ -40,12 +50,22 @@ public class Evo extends Game {
 	@Override
 	public void init() {
 		startTime = System.nanoTime();
+		
+		entities.add(new Human(20, 50, 20, "/myface.png"));
+		entities.add(new Human(20, 50, 20, "/zohaib.png"));
 	}
 
 	@Override
 	public void update() {
 		handleInput();
-		
+		for(Building b : buildings)
+		{
+			b.update();
+		}
+		for(Entity e : entities)
+		{
+			e.move();
+		}
 		estimatedNano = System.nanoTime() - startTime;
     }
 	
@@ -80,6 +100,14 @@ public class Evo extends Game {
 		
 		handleInput();
 
+		for(Building b : buildings)
+		{
+			b.paint(gr);
+		}
+		for(Entity e : entities)
+		{
+			e.paint(gr);
+		}
 	}
 	
 
